@@ -61,9 +61,13 @@ function handleOpenedAction(context) {
         const TELEGRAM_BOT_TOKEN = core.getInput('TELEGRAM_BOT_TOKEN');
         const TELEGRAM_CHAT_ID = core.getInput('TELEGRAM_CHAT_ID');
         const SEND_MESSAGE_URL = `${BASE_URL}${TELEGRAM_BOT_TOKEN}/sendMessage`;
+        const pr = context.payload.pull_request;
         axios_1.default.post(SEND_MESSAGE_URL, {
             chat_id: TELEGRAM_CHAT_ID,
-            text: context.payload.pull_request.title
+            text: `
+New PR: ${pr.title}
+From: ${context.payload.sender.login}
+Desc: ${pr.body}`
         });
     });
 }
