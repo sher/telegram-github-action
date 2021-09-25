@@ -64,10 +64,11 @@ function handleOpenedAction(context) {
         const pr = context.payload.pull_request;
         axios_1.default.post(SEND_MESSAGE_URL, {
             chat_id: TELEGRAM_CHAT_ID,
+            parse_mode: 'markdown',
             text: `
 New PR: ${pr.title}
 From: ${context.payload.sender.login}
-Desc: ${pr.body}`
+${pr.body}`
         });
     });
 }
