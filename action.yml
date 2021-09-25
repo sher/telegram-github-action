@@ -1,0 +1,18 @@
+name: 'Telegram GitHub Action'
+description: 'Telegram GitHub Action'
+author: 'sher'
+
+inputs:
+  GITHUB_TOKEN:
+    required: true
+    description: 'github repo secret token'
+  TELEGRAM_BOT_TOKEN:
+    required: true
+    description: 'telegram bot token'
+  TELEGRAM_CHAT_ID:
+    required: true
+    description: 'telegram chat id'
+
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

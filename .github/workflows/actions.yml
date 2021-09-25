@@ -1,0 +1,11 @@
+name: 'action-test'
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build: # make sure build/ci work properly
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
