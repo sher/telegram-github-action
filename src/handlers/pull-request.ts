@@ -25,7 +25,7 @@ async function handleOpenedAction(context: Context<PullRequestPayload>) {
 
   axios.post(SEND_MESSAGE_URL, {
     chat_id: TELEGRAM_CHAT_ID,
-    parse_mode: 'markdown',
+    parse_mode: 'Markdown',
     text: `
 New PR: ${pr.title}
 From: ${context.payload.sender.login}
