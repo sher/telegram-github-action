@@ -1,8 +1,10 @@
-name: 'action-test'
+name: actions
+
 on:
   pull_request:
-    branches:
-      - main
+    branches: [main]
+    types: [opened, reopened, assigned, closed]
+
 jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
