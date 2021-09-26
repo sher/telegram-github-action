@@ -23,8 +23,7 @@ export async function handleIssues(context: Context<IssuePayload>) {
 async function handleOpenedAction(context: Context<IssuePayload>) {
   const issue = context.payload.issue;
   const text = `
-${context.payload.sender.login} opened new issue [${issue.title}](${issue.html_url})
-${issue.body}`;
+${context.payload.sender.login} opened new issue [${issue.title}](${issue.html_url})`;
   return await sendMessage(text);
 }
 

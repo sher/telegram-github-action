@@ -23,8 +23,7 @@ export async function handlePullRequest(context: Context<PullRequestPayload>) {
 async function handleOpenedAction(context: Context<PullRequestPayload>) {
   const pr = context.payload.pull_request;
   const text = `
-${context.payload.sender.login} opened new PR [${pr.title}](${pr.html_url})
-${pr.body}`;
+${context.payload.sender.login} opened new PR [${pr.title}](${pr.html_url})`;
   return await sendMessage(text);
 }
 

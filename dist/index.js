@@ -64,8 +64,7 @@ function handleOpenedAction(context) {
     return __awaiter(this, void 0, void 0, function* () {
         const issue = context.payload.issue;
         const text = `
-${context.payload.sender.login} opened new issue [${issue.title}](${issue.html_url})
-${issue.body}`;
+${context.payload.sender.login} opened new issue [${issue.title}](${issue.html_url})`;
         return yield sendMessage(text);
     });
 }
@@ -171,8 +170,7 @@ function handleOpenedAction(context) {
     return __awaiter(this, void 0, void 0, function* () {
         const pr = context.payload.pull_request;
         const text = `
-${context.payload.sender.login} opened new PR [${pr.title}](${pr.html_url})
-${pr.body}`;
+${context.payload.sender.login} opened new PR [${pr.title}](${pr.html_url})`;
         return yield sendMessage(text);
     });
 }
