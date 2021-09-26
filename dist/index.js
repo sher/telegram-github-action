@@ -1,6 +1,113 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 6279:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.handleIssues = void 0;
+const core = __importStar(__nccwpck_require__(2186));
+const axios_1 = __importDefault(__nccwpck_require__(6545));
+const BASE_URL = 'https://api.telegram.org/bot';
+function handleIssues(context) {
+    return __awaiter(this, void 0, void 0, function* () {
+        switch (context.payload.action) {
+            case 'opened':
+                return yield handleOpenedAction(context);
+            case 'reopened':
+                return yield handleReopenedAction(context);
+            case 'closed':
+                return yield handleClosedAction(context);
+            default:
+                return yield handleUnsupportedAction(context);
+        }
+    });
+}
+exports.handleIssues = handleIssues;
+//-------------------------------------
+//- handlers
+//-------------------------------------
+function handleOpenedAction(context) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const issue = context.payload.issue;
+        const text = `
+${context.payload.sender.login} opened new issue [${issue.title}](${issue.html_url})
+${issue.body}`;
+        return yield sendMessage(text);
+    });
+}
+function handleReopenedAction(context) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const issue = context.payload.issue;
+        const text = `
+${context.payload.sender.login} reopened issue [${issue.title}](${issue.html_url})`;
+        return yield sendMessage(text);
+    });
+}
+function handleClosedAction(context) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const issue = context.payload.issue;
+        const text = `
+${context.payload.sender.login} closed issue [${issue.title}](${issue.html_url})`;
+        return yield sendMessage(text);
+    });
+}
+function handleUnsupportedAction(context) {
+    return __awaiter(this, void 0, void 0, function* () {
+    });
+}
+//-------------------------------------
+//- private
+//-------------------------------------
+function sendMessage(text) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const TELEGRAM_BOT_TOKEN = core.getInput('TELEGRAM_BOT_TOKEN');
+        const TELEGRAM_CHAT_ID = core.getInput('TELEGRAM_CHAT_ID');
+        const SEND_MESSAGE_URL = `${BASE_URL}${TELEGRAM_BOT_TOKEN}/sendMessage`;
+        axios_1.default.post(SEND_MESSAGE_URL, {
+            chat_id: TELEGRAM_CHAT_ID,
+            parse_mode: 'Markdown',
+            text
+        });
+    });
+}
+
+
+/***/ }),
+
 /***/ 5451:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -144,12 +251,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const github = __importStar(__nccwpck_require__(5438));
 const pull_request_1 = __nccwpck_require__(5451);
+const issues_1 = __nccwpck_require__(6279);
 run();
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         switch (github.context.eventName) {
             case 'pull_request':
                 return yield (0, pull_request_1.handlePullRequest)(github.context);
+            case 'issues':
+                return yield (0, issues_1.handleIssues)(github.context);
             default:
                 return yield handleUnsupportedEvent();
         }

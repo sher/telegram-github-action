@@ -24,9 +24,30 @@ export type PullRequest = {
   user?: User
 }
 
+export type Issue = {
+  assignee?: User,
+  assignees?: User[],
+  number: number,
+  body: string,
+  html_url: string,
+  id?: number,
+  labels?: string[],
+  state?: string,
+  title?: string,
+  url?: string,
+  user?: User
+}
+
 export type PullRequestPayload = {
   action: string,
   pull_request: PullRequest,
+  sender: User,
+  assignee?: User
+}
+
+export type IssuePayload = {
+  action: string,
+  issue: PullRequest,
   sender: User,
   assignee?: User
 }
