@@ -47,6 +47,10 @@ function handlePullRequest(context) {
         switch (context.payload.action) {
             case 'opened':
                 return yield handleOpenedAction(context);
+            case 'reopened':
+                return yield handleReopenedAction(context);
+            case 'closed':
+                return yield handleClosedAction(context);
             default:
                 return yield handleUnsupportedAction(context);
         }
@@ -54,26 +58,53 @@ function handlePullRequest(context) {
 }
 exports.handlePullRequest = handlePullRequest;
 //-------------------------------------
-//- private
+//- handlers
 //-------------------------------------
 function handleOpenedAction(context) {
     return __awaiter(this, void 0, void 0, function* () {
-        const TELEGRAM_BOT_TOKEN = core.getInput('TELEGRAM_BOT_TOKEN');
-        const TELEGRAM_CHAT_ID = core.getInput('TELEGRAM_CHAT_ID');
-        const SEND_MESSAGE_URL = `${BASE_URL}${TELEGRAM_BOT_TOKEN}/sendMessage`;
         const pr = context.payload.pull_request;
-        axios_1.default.post(SEND_MESSAGE_URL, {
-            chat_id: TELEGRAM_CHAT_ID,
-            parse_mode: 'markdown',
-            text: `
+        const text = `
 New PR: ${pr.title}
 From: ${context.payload.sender.login}
-${pr.body}`
-        });
+${pr.body}`;
+        return yield sendMessage(text);
+    });
+}
+function handleReopenedAction(context) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const pr = context.payload.pull_request;
+        const text = `
+PR: ${pr.title}
+From: ${context.payload.sender.login}`;
+        return yield sendMessage(text);
+    });
+}
+function handleClosedAction(context) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const pr = context.payload.pull_request;
+        const text = `
+PR: ${pr.title}
+From: ${context.payload.sender.login}`;
+        return yield sendMessage(text);
     });
 }
 function handleUnsupportedAction(context) {
     return __awaiter(this, void 0, void 0, function* () {
+    });
+}
+//-------------------------------------
+//- private
+//-------------------------------------
+function sendMessage(text) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const TELEGRAM_BOT_TOKEN = core.getInput('TELEGRAM_BOT_TOKEN');
+        const TELEGRAM_CHAT_ID = core.getInput('TELEGRAM_CHAT_ID');
+        const SEND_MESSAGE_URL = `${BASE_URL}${TELEGRAM_BOT_TOKEN}/sendMessage`;
+        axios_1.default.post(SEND_MESSAGE_URL, {
+            chat_id: TELEGRAM_CHAT_ID,
+            parse_mode: 'Markdown',
+            text
+        });
     });
 }
 
