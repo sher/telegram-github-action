@@ -64,7 +64,7 @@ function handleOpenedAction(context) {
     return __awaiter(this, void 0, void 0, function* () {
         const pr = context.payload.pull_request;
         const text = `
-${context.payload.sender.login} opened new PR ${pr.title}
+${context.payload.sender.login} opened new PR [${pr.title}](${pr.html_url})
 ${pr.body}`;
         return yield sendMessage(text);
     });
@@ -73,7 +73,7 @@ function handleReopenedAction(context) {
     return __awaiter(this, void 0, void 0, function* () {
         const pr = context.payload.pull_request;
         const text = `
-${context.payload.sender.login} reopened PR ${pr.title}`;
+${context.payload.sender.login} reopened PR [${pr.title}](${pr.html_url})`;
         return yield sendMessage(text);
     });
 }
@@ -81,7 +81,7 @@ function handleClosedAction(context) {
     return __awaiter(this, void 0, void 0, function* () {
         const pr = context.payload.pull_request;
         const text = `
-${context.payload.sender.login} closed PR ${pr.title}`;
+${context.payload.sender.login} closed PR [${pr.title}](${pr.html_url})`;
         return yield sendMessage(text);
     });
 }

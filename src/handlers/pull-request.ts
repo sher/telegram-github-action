@@ -23,7 +23,7 @@ export async function handlePullRequest(context: Context<PullRequestPayload>) {
 async function handleOpenedAction(context: Context<PullRequestPayload>) {
   const pr = context.payload.pull_request;
   const text = `
-${context.payload.sender.login} opened new PR ${pr.title}
+${context.payload.sender.login} opened new PR [${pr.title}](${pr.html_url})
 ${pr.body}`;
   return await sendMessage(text);
 }
@@ -31,14 +31,14 @@ ${pr.body}`;
 async function handleReopenedAction(context: Context<PullRequestPayload>) {
   const pr = context.payload.pull_request;
   const text = `
-${context.payload.sender.login} reopened PR ${pr.title}`;
+${context.payload.sender.login} reopened PR [${pr.title}](${pr.html_url})`;
   return await sendMessage(text);
 }
 
 async function handleClosedAction(context: Context<PullRequestPayload>) {
   const pr = context.payload.pull_request;
   const text = `
-${context.payload.sender.login} closed PR ${pr.title}`;
+${context.payload.sender.login} closed PR [${pr.title}](${pr.html_url})`;
   return await sendMessage(text);
 }
 
